@@ -93,7 +93,7 @@ Operating System :: MacOS
 
 setup(
     # package information
-    name='umi_tools',
+    name='umi_tools_csgx',
     version=__version__,
     description='umi_tools: Tools for UMI analyses',
     author='Ian Sudbery',

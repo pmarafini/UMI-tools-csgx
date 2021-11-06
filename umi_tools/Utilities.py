@@ -256,6 +256,7 @@ import random
 import uuid
 import tempfile
 import regex
+import warnings
 from umi_tools import __version__
 
 from builtins import bytes, chr
@@ -1168,15 +1169,15 @@ def validateExtractOptions(options):
             if "N" in options.pattern2:
                 extract_umi = True
 
-    if not extract_umi:
-        if options.extract_method == "string":
-            raise ValueError("barcode pattern(s) do not include any umi bases "
-                             "(marked with 'Ns') %s, %s" % (
-                                 options.pattern, options.pattern2))
-        elif options.extract_method == "regex":
-            raise ValueError("barcode regex(es) do not include any umi groups "
-                             "(starting with 'umi_') %s, %s" % (
-                                 options.pattern, options.pattern2))
+#    if not extract_umi:
+#        if options.extract_method == "string":
+#            warnings.warn("barcode pattern(s) do not include any umi bases "
+#                          "(marked with 'Ns') %s, %s" % (
+#                              options.pattern, options.pattern2), RuntimeWarning)
+#        elif options.extract_method == "regex":
+#            warnings.warn("barcode regex(es) do not include any umi groups "
+#                          "(starting with 'umi_') %s, %s" (
+#                              options.pattern, options.pattern2), RuntimeWarning)
 
     return(extract_cell, extract_umi)
 
