@@ -256,6 +256,7 @@ def main(argv=None):
                            "are not present in read1 input. This allows cell "
                            "barcode filtering of read1s without "
                            "considering read2s"))
+    group.add_option("--threshold", dest="threshold", type="int")
     parser.add_option_group(group)
 
     group = U.OptionGroup(parser, "[EXPERIMENTAl] barcode extraction options")
@@ -311,7 +312,7 @@ def main(argv=None):
         U.error("option --retain-umi only works with --extract-method=regex")
 
     if (options.filtered_out and not options.extract_method == "regex" and
-        whitelist is None):
+        options.whitelist is None):
         U.error("Reads will not be filtered unless extract method is"
                 "set to regex (--extract-method=regex) or cell"
                 "barcodes are filtered (--whitelist)")
@@ -402,9 +403,17 @@ def main(argv=None):
             lambda: collections.Counter())
 
     if options.whitelist:
-        cell_whitelist, false_to_true_map = whitelist_methods.getUserDefinedBarcodes(
-            options.whitelist,
-            getErrorCorrection=options.error_correct_cell)
+        if options.threshold != 0: 
+            cell_whitelist, false_to_true_map = whitelist_methods.getUserDefinedBarcodes(
+                options.whitelist,
+                getErrorCorrection=options.error_correct_cell,
+                threshold=options.threshold,
+                deriveErrorCorrection=True)
+        else:
+            cell_whitelist, false_to_true_map = whitelist_methods.getUserDefinedBarcodes(
+                options.whitelist,
+                getErrorCorrection=options.error_correct_cell)
+            
 
         ReadExtractor.cell_whitelist = cell_whitelist
         ReadExtractor.false_to_true_map = false_to_true_map
